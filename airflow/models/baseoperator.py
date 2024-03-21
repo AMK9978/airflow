@@ -762,6 +762,7 @@ class BaseOperator(AbstractOperator, metaclass=BaseOperatorMeta):
         email_on_retry: bool = conf.getboolean("email", "default_email_on_retry", fallback=True),
         email_on_failure: bool = conf.getboolean("email", "default_email_on_failure", fallback=True),
         retries: int | None = DEFAULT_RETRIES,
+        retry_if_queued: bool = False,
         retry_delay: timedelta | float = DEFAULT_RETRY_DELAY,
         retry_exponential_backoff: bool = False,
         max_retry_delay: timedelta | float | None = None,
@@ -869,6 +870,7 @@ class BaseOperator(AbstractOperator, metaclass=BaseOperatorMeta):
         self.executor_config = executor_config or {}
         self.run_as_user = run_as_user
         self.retries = parse_retries(retries)
+        self.retry_if_queued = retry_if_queued
         self.queue = queue
         self.pool = Pool.DEFAULT_POOL_NAME if pool is None else pool
         self.pool_slots = pool_slots

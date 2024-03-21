@@ -823,7 +823,8 @@ def _is_eligible_to_retry(*, task_instance: TaskInstance | TaskInstancePydantic)
     if TYPE_CHECKING:
         assert task_instance.task
 
-    return task_instance.task.retries and task_instance.try_number <= task_instance.max_tries
+    return task_instance.task.retry_if_queued or \
+        (task_instance.task.retries and task_instance.try_number <= task_instance.max_tries)
 
 
 def _handle_failure(
